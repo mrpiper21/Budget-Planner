@@ -2,6 +2,8 @@ import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import React, { useState } from "react";
 import Colors from "../../../Utils/Colors";
 import { useNavigation } from "@react-navigation/native";
+import { Entypo, Ionicons, FontAwesome5 } from "@expo/vector-icons";
+import moment from "moment";
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
@@ -13,6 +15,7 @@ interface CatProps {
 
 const CategoryList: React.FC<CatProps> = ({ CategoryItem }) => {
   const navigation = useNavigation() as any;
+  console.log("catItems", CategoryItem);
 
   const handleCategoryClick = (category: any) => {
     navigation.navigate("Category-detail", { categoryId: category.id });
@@ -20,12 +23,13 @@ const CategoryList: React.FC<CatProps> = ({ CategoryItem }) => {
 
   const calculateTotalCost = (categoryItems: any) => {
     let totalCost = 0;
-    categoryItems?.forEach((items) => {
-      totalCost += items.cost;
+    categoryItems?.forEach((items: number) => {
+      totalCost += items?.cost;
     });
 
     return totalCost;
   };
+
   return (
     <View style={{ marginTop: 20 }}>
       <Text style={{ fontWeight: "bold", fontSize: 20, marginBottom: 10 }}>
@@ -38,31 +42,64 @@ const CategoryList: React.FC<CatProps> = ({ CategoryItem }) => {
             key={index}
             style={styles.container}
           >
-            <View style={styles.iconContainer}>
-              <Text
-                style={{
-                  ...styles.iconText,
-                  backgroundColor: category?.color,
-                }}
-              >
-                {category?.icon}
+            <View>
+              <Text style={{ fontSize: wp(2.5), marginBottom: wp(2) }}>
+                {moment(category.created_at).format("LL")}
               </Text>
+              <View style={styles.iconContainer}>
+                <Text
+                  style={{
+                    ...styles.iconText,
+                    backgroundColor: category?.color,
+                  }}
+                >
+                  {category?.icon}
+                </Text>
+              </View>
             </View>
             <View style={styles.subContainer}>
               <View>
                 <Text style={styles.categoryText}>{category.name}</Text>
                 <Text style={styles.itemsCount}>
-                  {category?.categoryItems.length > 1
+                  {category?.categoryItems.length >= 1
                     ? category?.categoryItems.length
                     : 0}
                   items
                 </Text>
               </View>
-              <View>
-                <Text style={styles.total}>${category?.assign_budget}</Text>
-                <Text>
-                  spent: ${calculateTotalCost(category?.categoryItems)}
-                </Text>
+              <View
+                style={{
+                  height: hp(12),
+                  justifyContent: "space-between",
+                  padding: wp(1.5),
+                }}
+              >
+                <View
+                  style={{ alignItems: "flex-end", justifyContent: "center" }}
+                >
+                  <Entypo name="chevron-small-right" size={24} color="black" />
+                  <View>
+                    <Text style={styles.total}>
+                      GH₵ {category?.assign_budget}
+                    </Text>
+                  </View>
+                  <Text>
+                    spent: ₵{calculateTotalCost(category?.categoryItems)}
+                  </Text>
+                </View>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    alignItems: "center",
+                    width: wp(17),
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <Ionicons name="time-outline" size={wp(3)} color="teal" />
+                  <Text style={{ color: "gray" }}>
+                    {moment(category.created_at).format("LT")}
+                  </Text>
+                </View>
               </View>
             </View>
           </TouchableOpacity>
@@ -80,10 +117,11 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
     gap: wp(2),
-    alignItems: "center",
+    alignItems: "flex-start",
     backgroundColor: Colors.WHITE,
     padding: wp(3),
     borderRadius: 15,
+    height: hp(15),
   },
   iconContainer: {
     justifyContent: "center",
@@ -98,6 +136,7 @@ const styles = StyleSheet.create({
   categoryText: {
     fontWeight: "bold",
     fontSize: wp(4),
+    marginBottom: wp(1),
   },
   subContainer: {
     width: "80%",

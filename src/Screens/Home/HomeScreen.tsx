@@ -11,7 +11,7 @@ import {
 } from "react-native-responsive-screen";
 import React, { useEffect, useState } from "react";
 import client from "../../Utils/KindConfig";
-import Service from "../../Utils/Service";
+import Service, { getData, storeData } from "../../Utils/Service";
 import { supabase } from "../../Utils/SuperbaseConfig";
 import Header from "../../components/Home/Header";
 import Colors from "../../Utils/Colors";
@@ -21,9 +21,26 @@ import { useNavigation } from "@react-navigation/native";
 import CategoryList from "../../components/Home/Category/CategoryList";
 import { ScrollView } from "react-native";
 
+export interface catDataProps {
+  id: string;
+  name: string;
+  icon: string;
+  categoryItems: any[];
+  assign_budget: number;
+  created_at: string;
+  created_by: string;
+}
+
 const HomeScreen = () => {
+  const [userDetails, setUserDetails] = useState({
+    email: "",
+    family_name: "",
+    given_name: "",
+    id: "",
+    picture: "",
+  });
   const [loading, setloading] = useState(false);
-  const [categoryList, setcategoryList] = useState() as any;
+  const [categoryList, setcategoryList] = useState([]);
   const navigation = useNavigation() as any;
   useEffect(() => {
     getCategoryList();
@@ -31,14 +48,22 @@ const HomeScreen = () => {
 
   const getCategoryList = async () => {
     const user = await client.getUserDetails();
-    console.log(user);
+    setUserDetails(user);
     let { data, error } = await supabase
       .from("category")
       .select("*,categoryItems(*)")
       .eq("created_by", user.email);
     data && setloading(false);
-    console.log("data", data);
-    setcategoryList(data);
+    // console.log("data", data);
+    try {
+      const parsedData = JSON.parse(JSON.stringify(data));
+      storeData("categoryList", JSON.stringify(parsedData));
+      const Data = await getData("categoryList");
+      setcategoryList(JSON.parse(Data));
+    } catch (error) {
+      console.error("Error parsing JSON data:", error);
+    }
+    // setcategoryList(data);
   };
   const handleLogout = async () => {
     const loggedOut = await client.logout();
@@ -71,7 +96,7 @@ const HomeScreen = () => {
           }}
         >
           <TouchableOpacity onPress={handleLogout}>
-            <Header />
+            <Header user={userDetails} />
           </TouchableOpacity>
         </View>
 

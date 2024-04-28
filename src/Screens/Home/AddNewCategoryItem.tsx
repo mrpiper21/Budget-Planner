@@ -59,7 +59,7 @@ const AddNewCategoryItem = ({ route }: CategoryDetailProps) => {
       .select()
       .eq("id", categoryId);
 
-    if (categoryData.length === 0) {
+    if (categoryData?.length === 0) {
       const { data: categoryInsert, error: categoryInsertError } =
         await supabase
           .from("category")

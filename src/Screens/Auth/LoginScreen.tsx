@@ -6,7 +6,7 @@ import {
 } from "react-native-responsive-screen";
 import Colors from "../../Utils/Colors";
 import client from "../../Utils/KindConfig";
-import Service from "../../Utils/Service";
+import { storeData } from "../../Utils/Service";
 import { useNavigation } from "@react-navigation/native";
 
 const LoginScreen = () => {
@@ -15,7 +15,7 @@ const LoginScreen = () => {
     const token = await client.login();
     if (token) {
       // User was authenticated
-      await Service.storeData("login", "true");
+      await storeData("login", "true");
     }
   };
 

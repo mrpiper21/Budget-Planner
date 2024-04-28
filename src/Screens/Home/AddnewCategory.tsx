@@ -44,9 +44,9 @@ const AddnewCategory = () => {
     if (data) {
       setCategoryName("");
       setTotalBudget("");
-      navigation.navigative("Category-detail", { categoryId: data[0].id });
-      ToastAndroid.show("Category Created", ToastAndroid.SHORT);
       setIsLoading(false);
+      navigation.navigate("Category-detail", { categoryId: data[0].id });
+      ToastAndroid.show("Category Created", ToastAndroid.SHORT);
 
       if (error) {
         setIsLoading(false);

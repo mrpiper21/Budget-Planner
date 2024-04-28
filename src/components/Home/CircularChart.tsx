@@ -7,44 +7,67 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
+import { getData } from "../../Utils/Service";
 
 interface Props {
   categoryList: any[];
 }
 const CircularChart: React.FC<Props> = ({ categoryList }) => {
   const widthAndHeight = 150;
+  const [estimatedBudget, setEstimatedBudget] = useState(0);
+  const [totalMoneySpent, setTotalMoneySpent] = useState(0);
   const [values, setValues] = useState([1]);
   const [sliceColor, setSliceColor] = useState([Colors.GRAY]);
 
   useEffect(() => {
+    // GetData();
     categoryList && updateCircularChart();
-  }, []);
+    // console.log("category List: ", categoryList);
+  }, [categoryList]);
+
+  // const GetData = async () => {
+  //   const data = await getData("categoryList");
+  //   setCategoryList(JSON.parse(data));
+  // };
 
   const updateCircularChart = () => {
     // setSliceColor([]);
     // setValues([]);
+    let moneySpent = 0;
     categoryList?.forEach((item, index) => {
-      let itemTotalCost = 0;
       item?.categoryItems.forEach((item_) => {
-        itemTotalCost += item_.cost;
+        console.log(item_.cost);
+        moneySpent += item_.cost;
       });
 
+      setTotalMoneySpent(moneySpent);
       setSliceColor((sliceColor) => [...sliceColor, Colors.COLOR_LIST[index]]);
-      setValues((values) => [...values, itemTotalCost]);
+      setValues((values) => [...values, Math.floor(moneySpent)]);
     });
+
+    let totalBuget = 0;
+    categoryList?.forEach((item) => {
+      totalBuget += item?.assign_budget;
+    });
+    console.log("total budget: ", totalBuget);
+    setEstimatedBudget(totalBuget);
   };
   return (
     <View style={styles.container}>
-      <Text style={{ fontSize: 20, fontFamily: "outfit" }}>
-        Total Estimate: <Text style={{ fontWeight: "bold" }}>0$</Text>
-      </Text>
+      <View>
+        <Text style={{ fontSize: 20, fontFamily: "outfit" }}>
+          Estimated Budget:
+          <Text style={{ fontWeight: "bold" }}>₵ {estimatedBudget}</Text>
+        </Text>
+        <Text>total debursement: ₵{totalMoneySpent}</Text>
+      </View>
       <View style={styles.subContainer}>
         <View style={{ alignItems: "center", justifyContent: "center" }}>
           <PieChart
             widthAndHeight={widthAndHeight}
             series={values}
             sliceColor={sliceColor}
-            coverRadius={0.65}
+            coverRadius={0.01}
             coverFill={"#FFF"}
           />
         </View>

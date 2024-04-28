@@ -48,6 +48,7 @@ const CategoryDetail = ({ route }: CategoryDetailProps) => {
     </View>
   ) : (
     <View
+      key={categoryId}
       style={{
         padding: 20,
         marginTop: 20,

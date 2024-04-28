@@ -8,27 +8,24 @@ import {
 import Colors from "../../Utils/Colors";
 import { Ionicons } from "@expo/vector-icons";
 
-const Header = () => {
-  const [user, setUser] = useState() as any;
-
-  useEffect(() => {
-    setUser(getUserData);
-    console.log("prod", user);
-  }, []);
-  const getUserData = async () => {
-    const User = await client.getUserDetails;
-    return new Promise((resolve) => {
-      console.log(User);
-      setUser(User).then(() => {
-        resolve(User);
-      });
-    });
+interface HeaderProps {
+  user: {
+    email: string;
+    family_name: string;
+    given_name: string;
+    id: string;
+    picture: string;
   };
+}
+
+const Header: React.FC<HeaderProps> = ({ user }) => {
   return (
     <View
+      key={user?.id}
       style={{
         display: "flex",
         flexDirection: "row",
+        alignItems: "center",
         gap: 8,
       }}
     >
@@ -36,7 +33,7 @@ const Header = () => {
         style={{
           width: wp(15),
           height: wp(15),
-          backgroundColor: "tomato",
+          // backgroundColor: "tomato",
           borderRadius: 99,
         }}
         source={{ uri: user?.picture }}
@@ -58,7 +55,7 @@ const Header = () => {
           <Text
             style={{ color: Colors.WHITE, fontSize: 20, fontWeight: "500" }}
           >
-            {user?.given_name}
+            {user?.family_name}
           </Text>
         </View>
         <Ionicons name="notifications" size={24} color="white" />

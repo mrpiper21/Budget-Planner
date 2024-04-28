@@ -22,7 +22,7 @@ const ProtectStack = () => {
         component={AddnewCategory}
       />
       <Stack.Screen
-        // initialParams={{ categoryId: 0 }}
+        initialParams={{ categoryId: 0 }}
         options={{ headerShown: false }}
         name="Category-detail"
         component={CategoryDetail}
