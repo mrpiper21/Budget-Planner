@@ -35,10 +35,10 @@ const CircularChart: React.FC<Props> = ({ categoryList }) => {
     // setValues([]);
     let moneySpent = 0;
     categoryList?.forEach((item, index) => {
-      item?.categoryItems.forEach((item_) => {
-        console.log(item_.cost);
-        moneySpent += item_.cost;
-      });
+      item?.categoryItems.forEach((item_: any) => {
+				console.log(item_.cost);
+				moneySpent += item_.cost;
+			});
 
       setTotalMoneySpent(moneySpent);
       setSliceColor((sliceColor) => [...sliceColor, Colors.COLOR_LIST[index]]);

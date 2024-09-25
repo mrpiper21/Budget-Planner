@@ -58,7 +58,7 @@ const HomeScreen = () => {
     try {
       const parsedData = JSON.parse(JSON.stringify(data));
       storeData("categoryList", JSON.stringify(parsedData));
-      const Data = await getData("categoryList");
+      const Data: any = await getData("categoryList");
       setcategoryList(JSON.parse(Data));
     } catch (error) {
       console.error("Error parsing JSON data:", error);

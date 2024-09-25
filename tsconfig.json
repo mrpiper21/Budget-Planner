@@ -3,6 +3,7 @@
   "compilerOptions": {
     "esModuleInterop": true,
     "types": ["hammerjs"],
-    "strict": true
+    "strict": true,
+    "jsx": "react-jsx"
   }
 }

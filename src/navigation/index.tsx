@@ -9,7 +9,8 @@ const AppNavigation = () => {
 	const user = useContext(useUserContext);
 	return (
 		<NavigationContainer>
-			<UserContext>{user?.user ? <ProtectStack /> : <AuthStack />}</UserContext>
+			{/* <UserContext>{user?.user ? <ProtectStack /> : <AuthStack />}</UserContext> */}
+			<ProtectStack />
 		</NavigationContainer>
 	);
 };

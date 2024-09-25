@@ -15,7 +15,10 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "runtimeVersion": {
+        "policy": "appVersion"
+      }
     },
     "android": {
       "adaptiveIcon": {
@@ -25,7 +28,8 @@
       "permissions": [
         "android.permission.RECORD_AUDIO"
       ],
-      "package": "com.mr.piper.BudgetPlanner"
+      "package": "com.mr.piper.BudgetPlanner",
+      "runtimeVersion": "1.0.0"
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -38,6 +42,14 @@
           "photosPermission": "The app accesses your photos to let you share them with your friends."
         }
       ]
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "026e090b-25d2-430e-bd12-211d9646d6b7"
+      }
+    },
+    "updates": {
+      "url": "https://u.expo.dev/026e090b-25d2-430e-bd12-211d9646d6b7"
+    }
   }
 }
